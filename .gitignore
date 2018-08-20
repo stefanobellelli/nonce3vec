@@ -1,0 +1,15 @@
+#python stuff
+/__pycache__
+
+#dumps
+/log
+/vec
+/svm
+
+#bnc (copyright issues)
+/corpora/bnc*.txt
+/corpora/bnc/*.tar.gz
+/output/corpora/bnc.txt
+
+#testing stuff
+/sandbox

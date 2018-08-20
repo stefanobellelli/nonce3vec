@@ -1,0 +1,48 @@
+SVC output:
+........*.*
+optimization finished, #iter = 9548
+obj = -147861714.618466, rho = -0.985975
+nSV = 2873, nBSV = 1590
+Total nSV = 2873
+[LibSVM]
+
+SVC Model:
+SVC(C=100000, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma='auto', kernel='poly',
+  max_iter=10000000, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=True)
+
+Score: 0.8821762349799733
+
+Confusion matrix, without normalization:
+[[1385  238]
+ [ 115 1258]]
+
+Normalized confusion matrix:
+[[0.85 0.15]
+ [0.08 0.92]]
+
+SVC output:
+.................*....*
+optimization finished, #iter = 21457
+obj = -561499181.687103, rho = -0.983077
+nSV = 2355, nBSV = 476
+Total nSV = 2355
+[LibSVM]
+
+SVC Model:
+SVC(C=1000000, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma='auto', kernel='poly',
+  max_iter=10000000, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=True)
+
+Score: 0.8888518024032043
+
+Confusion matrix, without normalization:
+[[1338  171]
+ [ 162 1325]]
+
+Normalized confusion matrix:
+[[0.89 0.11]
+ [0.11 0.89]]
+
