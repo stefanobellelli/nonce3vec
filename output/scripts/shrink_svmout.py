@@ -27,7 +27,7 @@ for filename in files:
 			if fast in s or conv in s:
 				buf[i - 1] = '\n' #clear the preceding line
 
-		#so far, ConvergeWarning messages (2 lines) have been blanked
+		#so far, ConvergenceWarning messages (2 lines) have been blanked
 		#out. this would still break parse_classifier.py; so the lines
 		#must be physically removed from the file
 		for i in range(len(buf)):
