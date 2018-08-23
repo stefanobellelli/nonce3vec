@@ -1,43 +1,39 @@
 """Plot a vector space in 2D"""
 
-from pandas import DataFrame
-from matplotlib import cm
-from sklearn.manifold import TSNE
-from numpy import array
-
-def run_TSNE(mat):
-	return array(TSNE(n_components = 2).fit_transform(mat))
-
-def makefigure(src_m2d):#, labels):
-	cmap = cm.get_cmap('nipy_spectral')
-
-	m2d = DataFrame(src_m2d)
-	m2d.columns = ['tSNE1','tSNE2']
-	m2d.head()
-
-	ax = m2d.plot(kind = 'scatter', x = 'tSNE1', y = 'tSNE2', \
-		figsize = (30, 18), c = range(len(m2d)), colormap = cmap, \
-		linewidth = 0, legend = False)
-	ax.set_xlabel('x')
-	ax.set_ylabel('y')
-
-	#for i, word in enumerate(m2d.index):
-	#	ax.annotate(word, (m2d.iloc[i].PC2, m2d.iloc[i].PC1), \
-	#		color = 'black', size = 'large', \
-	#		textcoords = 'offset points')
-
-	return ax.get_figure()
-
 import pickle
+from pandas import DataFrame
+from sklearn.manifold import TSNE
+import numpy as np
 
-with open('pickle', 'rb') as f:
-	src = pickle.load(f)
+def get_dataframe(filename):
+	#access dict
+	with open(filename, 'rb') as f:
+		dic = pickle.load(f)
 
-srcmat = []
-for k, v in src.items():
-	srcmat.append(v)
-srcmat = np.array(srcmat)
+	#create matrix of vectors
+	mat = []
+	for k, v in dic.items():
+		mat.append(v)
+	mat = np.array(mat)
 
-m2d = run_TSNE(srcmat)
-fig = makefigure(m2d)
+	#run tsne
+	mat = TSNE(n_components = 2).fit_transform(mat)
+
+	#create dataframe
+	dataframe = DataFrame(mat)
+	dataframe.columns = ['tSNE1', 'tSNE2']
+	dataframe.head()
+
+	return dataframe
+
+#calc dataframes
+gen_df = get_dataframe('posvec_gen.pickle')
+inf_df = get_dataframe('posvec_inf.pickle')
+
+ax = gen_df.reset_index().plot(kind = 'scatter', x = 'tSNE1', y = 'tSNE2', \
+		figsize = (30, 18), color = 'red', label = 'G1')
+inf_df.reset_index().plot(kind = 'scatter', x = 'tSNE1', y = 'tSNE2', \
+		figsize = (30, 18), color = 'blue', label = 'G2', ax = ax)
+
+fig = ax.get_figure()
 fig.savefig('fig.png')
