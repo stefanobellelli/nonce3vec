@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Takes a (smalle) set number of entries from corpora, for testing purposes.
 """
 

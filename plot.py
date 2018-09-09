@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Plot a vector space in 2D"""
 
 import pickle

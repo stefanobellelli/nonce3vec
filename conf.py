@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Contains all customizable settings.
 Comments document the purpose of each var.
 """

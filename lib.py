@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Contains functions called by other files."""
 
 import os, numpy as np, json, random, spacy

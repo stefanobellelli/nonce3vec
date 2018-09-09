@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Takes a dump of the 1st sentences of Wikipedia pages; then random-picks a set
 no. of nonce :: context pairs therefrom, purges invalid entries, and formats
 them so that they can be parsed by vectorize.py.

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Takes formatted corpora and creates vector spaces (saved as pickles in a
 subdir). Dumps a lot of logfiles (in a separate subdir) in the process.
 """

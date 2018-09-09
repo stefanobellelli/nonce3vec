@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Takes sliced & tarballed BNC and merges it into one file; then random-picks
 a set no. of lines therefrom, couples them with random-picked nonces, and format
 them so that they can be parsed by vectorize.py.
