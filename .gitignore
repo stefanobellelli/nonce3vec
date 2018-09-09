@@ -1,5 +1,5 @@
 #python stuff
-/__pycache__
+__pycache__
 
 #bnc (copyright issues)
 /corpora/bnc*.txt
@@ -11,10 +11,8 @@
 /vectorize/gen
 /vectorize/inf
 /vectorize/logs
-/classify/*.txt
-/classify/*.png
-
-
+/classify/*/*.txt
+/classify/*/*.png
 
 #testing stuff
 /sandbox

@@ -56,6 +56,6 @@ for i in outrange:
 	out.append(nonce + ' :: ' + context)
 
 #output 'nonce :: sentence' to file
-with open(Corpora.gen.formatted, 'w') as f:
+with open(Corpora.gen.maxi, 'w') as f:
 	for line in out:
 		f.write(line)

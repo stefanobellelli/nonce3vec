@@ -19,9 +19,9 @@ with open(Corpora.inf.srcdir + 'wiki_src.txt', 'r') as src:
 
 #lambda: lines coming from disambiguation wiki pages
 disamb = lambda x : 'may refer to'   in x or 'may stand for'   in x \
-		 or 'can refer to'   in x or 'can stand for'   in x \
-		 or 'might refer to' in x or 'might stand for' in x \
-		 or 'also refer to'  in x or 'also stand for'  in x
+	         or 'can refer to'   in x or 'can stand for'   in x \
+	         or 'might refer to' in x or 'might stand for' in x \
+	         or 'also refer to'  in x or 'also stand for'  in x
 
 #lambda: empty lines (nonce without definition)
 empty = lambda x : len(x) <= 1 or '::' in x[-5:]
@@ -44,6 +44,6 @@ for i in outrange:
 	lines.append(line)
 
 #output to file
-with open(Corpora.inf.formatted, 'w') as f:
+with open(Corpora.inf.maxi, 'w') as f:
 	for line in lines:
 		f.write(line)

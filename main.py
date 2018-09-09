@@ -2,31 +2,31 @@
 
 """Runs some or all of the scripts.
 Flags:
--c --corpora       Format corpora
--m --mini          Generate mini corpora (for testing purposes)
--v --vectorize     Run vectorizer
--s --svm           Run SVM classifier
--p --parse-svm     Parse all SVM output files
+--corpora         Format corpora
+--mini            Generate mini corpora (for testing purposes)
+--vectorize       Run vectorizer
+--svm --classify  Run SVM classifier
+--parse-svm       Parse all SVM output files
 
--a --all           Do all
+--all             Do all
 """
 
 import os, sys
 from lib import newdirs, parse_args
-from conf import Vectors, Svm
+from conf import Svm
 
 flags = sys.argv[1:]
-doall = ['-a', '--all']
+doall = ['--all']
 
 #exec scripts
-if parse_args(flags, ['-c', '--corpora'] + doall):
-	import format_bnc
-	import format_wiki
-if parse_args(flags, ['-m', '--mini'] + doall):
-	import mini_corpora.py
-if parse_args(flags, ['-v', '--vectorize'] + doall):
-	import vectorize
-if parse_args(flags, ['-s', '--svm'] + doall):
-	newdirs(Svm.svmdir)
-	os.system('python3 -u classify.py > ' + \
-		f'{Svm.svmdir}{Vectors.ngrsize}_{Svm.target}_{Vectors.vecsize}.txt')
+if parse_args(flags, ['--corpora'] + doall):
+	from corpora import format_bnc
+	from corpora import format_wiki
+if parse_args(flags, ['--mini'] + doall):
+	from corpora import mini_corpora
+if parse_args(flags, ['--vectorize'] + doall):
+	from vectorize import vectorize
+if parse_args(flags, ['--svm' '--classify'] + doall):
+	newdirs(Svm.subdir)
+	os.system('python3 -u {Svm.maindir}/classify.py > ' + \
+		f'{Svm.subdir}{Svm.desc}.txt')

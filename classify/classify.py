@@ -4,13 +4,17 @@
 Prints the results in console and saves plotted graphs in a subdir.
 """
 
+#add parent dir to PYTHONPATH
+import os, sys, inspect
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
+
 import pickle, json
 from numpy import concatenate
+from matplotlib import pyplot as plt
 from sklearn.svm import SVC
 from lib import newdirs, make_arrays, make_labels, \
 	make_confmat, get_queries
 from conf import Vectors, Svm
-from matplotlib import pyplot as plt
 
 #objects
 class Train: #will be populated by Topic
@@ -45,7 +49,7 @@ for kernel, C in settings:
 	inf = Topic('inf')
 
 	#wcreate dirs for dumps (logs and bins)
-	newdirs(Svm.svmdir)
+	newdirs(Svm.subdir)
 
 	#prepare train/test sets
 	x_train = concatenate([gen.train.vec, inf.train.vec])
@@ -80,9 +84,9 @@ for kernel, C in settings:
 		inf.fullname)
 
 	#set output files
-	s = f'{Vectors.ngrsize}_{Svm.target}_{Vectors.vecsize}_{kernel}_{C}_'
-	nonorm.imgfile  = s + Svm.nonorm
-	yesnorm.imgfile = s + Svm.yesnorm
+	s = f'{Svm.desc}_{kernel}_{C}_'
+	nonorm.imgfile  = Svm.subdir + s + Svm.nonorm
+	yesnorm.imgfile = Svm.subdir + s + Svm.yesnorm
 
 	#print str and save png of confmats
 	for obj in [nonorm, yesnorm]:

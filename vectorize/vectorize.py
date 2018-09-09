@@ -4,18 +4,20 @@
 subdir). Dumps a lot of logfiles (in a separate subdir) in the process.
 """
 
-import sys, json, pickle, numpy as np
+import json, pickle, numpy as np
 from conf import Corpora, Vectors
 from lib import newdirs, postag, dictize, vecindex, vectorize, unifiedindex
 
 ## INITIAL SETTINGS ##
-#c: access conf settings and populate with new attrs
-class Topic:
-	def __init__(self, fname, name):
-		self.fname  = fname
-		self.subdir = name + '/'
-		self.vec    = Vectors(self.subdir)
 
+#access conf settings and populate with new attrs
+class Topic:
+	def __init__(self, filename, name):
+		self.filename = filename
+		self.subdir   = name + '/'
+		self.vec      = Vectors(self.subdir)
+
+#create topic objs
 gen = Topic(Corpora.gen.formatted, Corpora.gen.kind)
 inf = Topic(Corpora.inf.formatted, Corpora.inf.kind)
 corpora = [gen, inf]
@@ -27,7 +29,7 @@ for c in corpora:
 ## POS-TAG & COUNT N-GRAMS ##
 for c in corpora:
 	#pos-tag source file
-	with open(c.fname, 'r') as src:
+	with open(c.filename, 'r') as src:
 		tag_dict, log = postag(src)
 	#dump log
 	with open(c.vec.logs.postag, 'w') as lf:
@@ -40,6 +42,7 @@ for c in corpora:
 		lf.write(log)
 
 ## CREATE UNIFIED INDEXES OF ALL WORD/POS N-GRAMS ##
+
 wordindex, posindex, udict_log, uindex_log = \
 	unifiedindex(Vectors.vecsize, gen.ngrdict, inf.ngrdict)
 #dump logs (word & pos are in the same file)
@@ -48,6 +51,7 @@ with open(gen.vec.logs.udict, 'w') as dl, open(gen.vec.logs.uindex, 'w') as il:
 	il.write(uindex_log) #unified index
 
 ## CREATE DICTS OF N-GRAM VECTORS ##
+
 #(nonce:n-gram-vec), word and pos are separated
 for c in corpora:
 	#words
