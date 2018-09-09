@@ -80,8 +80,9 @@ for kernel, C in settings:
 		inf.fullname)
 
 	#set output files
-	nonorm.imgfile  = Svm.nonorm
-	yesnorm.imgfile = Svm.yesnorm
+	s = f'{Vectors.ngrsize}_{Svm.target}_{Vectors.vecsize}_{kernel}_{C}_'
+	nonorm.imgfile  = s + Svm.nonorm
+	yesnorm.imgfile = s + Svm.yesnorm
 
 	#print str and save png of confmats
 	for obj in [nonorm, yesnorm]:
