@@ -8,6 +8,19 @@ from matplotlib import pyplot as plt
 from random import shuffle
 from sklearn.metrics import confusion_matrix
 
+def parse_args(given, control):
+	"""checks if some of the given args are valid for a condition"""
+	pairs =  [(x, y) for x in given for y in control]
+	for g, c in pairs:
+		if g == c:
+			return True
+	return False
+
+def newdirs(*args):
+	"""create dirs if not existing"""
+	for arg in args: #strings
+		os.makedirs(arg, exist_ok = True)
+
 def badtoken(t):
 	"""check if t is punctuation, space, or newline char"""
 	return t.is_punct or t.text in [' ', '\n'] #or t.tag_ == 'CD'
@@ -77,11 +90,6 @@ def getline_inf(rng, corpus, nums):
 		break #everything's ok if this point is reached
 
 	return n, line
-
-def newdirs(*args):
-	"""create dirs if not existing"""
-	for arg in args: #strings
-		os.makedirs(arg, exist_ok = True)
 
 def sanitize(string):
 	"""remove quirks of corpora (especially wiki)"""
