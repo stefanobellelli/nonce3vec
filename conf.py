@@ -32,24 +32,6 @@ class Corpora: #where raw src corpora and formatted outputs are stored
 	inf = Corpus(name = 'wiki', kind = 'inf', usemini = usemini, \
 		minioffset = 0)
 
-class Logs: #where plaintext logfiles are stored
-	logdir = 'log/'
-	#dictionary of all per-nonce frequencies (the two dicts in one file):
-	udict  = logdir + 'unified_dictionary.log'
-	#ordered index of vector dimensions:
-	uindex = logdir + 'unified_index.log'
-
-	def __init__(self, subdir):
-		self.dir      = self.logdir + subdir
-		#pos-tagged corpora:
-		self.postag   = self.dir + 'tagged.log'
-		#dict of per-nonce (relative) frequencies:
-		self.dic      = self.dir + 'dictionary.log'
-		#vectors of pos n-grams dimensions:
-		self.posvec   = self.dir + 'posvec.log'
-		#vectors of word n-grams dimensions:
-		self.wordvec  = self.dir + 'wordvec.log'
-
 class Vectors: #where pickled (binary) vector-space files are stored
 	## SETTINGS ##
 	ngrsize = 2         #size of n-grams (stay below 5 to avoid errors!)
@@ -59,12 +41,36 @@ class Vectors: #where pickled (binary) vector-space files are stored
 		exclude = ['is_a', 'is_an', 'is_the', 'VBZ_DT']
 
 	## DIRECTORIES ##
-	vecdir = 'vec/'
-
 	def __init__(self, subdir):
-		self.dir     = self.vecdir + subdir
+		maindir = 'vectorize/'
+
+		self.dir = maindir + subdir
 		self.wordvec = self.dir + 'wordvec.pickle'
 		self.posvec  = self.dir + 'posvec.pickle'
+
+		class Logs:
+			def __init__(self, vecdir, subdir):
+				#GENERAL LOGS
+				self.dir = maindir + 'logs/'
+				#dictionary of all per-nonce frequencies
+				#(the two dicts in one file):
+				self.udict  = self.dir + \
+					'unified_dictionary.log'
+				#ordered index of vector dimensions:
+				self.uindex = self.dir + 'unified_index.log'
+
+				#TOPICWISE LOGS
+				self.dir += subdir
+				#pos-tagged corpora:
+				self.postag  = self.dir + 'tagged.log'
+				#dict of per-nonce (relative) frequencies:
+				self.dic     = self.dir + 'dictionary.log'
+				#vectors of pos n-grams dimensions:
+				self.posvec  = self.dir + 'posvec.log'
+				#vectors of word n-grams dimensions:
+				self.wordvec = self.dir + 'wordvec.log'
+
+		self.logs = Logs(self.dir, subdir)
 
 class Svm: #where SVM plotted graphs are stored
 	## SETTINGS ##
@@ -87,6 +93,6 @@ class Svm: #where SVM plotted graphs are stored
 	queryfile = 'queryvec.txt' #file with real queries
 
 	## DIRECTORIES ##
-	svmdir = 'svm/'
+	svmdir = 'classify/'
 	nonorm  = svmdir + 'confusion.png'
 	yesnorm = svmdir + 'confusion-norm.png'
