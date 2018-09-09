@@ -1,15 +1,20 @@
 #python stuff
 /__pycache__
 
-#dumps
-/log
-/vec
-/svm
-
 #bnc (copyright issues)
 /corpora/bnc*.txt
 /corpora/bnc/*.tar.gz
-/output/corpora/bnc.txt
+/backup/corpora/bnc.txt
+
+#dumps
+/corpora/*.txt
+/vectorize/gen
+/vectorize/inf
+/vectorize/logs
+/classify/*.txt
+/classify/*.png
+
+
 
 #testing stuff
 /sandbox
