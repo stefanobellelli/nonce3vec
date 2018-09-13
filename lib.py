@@ -16,11 +16,6 @@ def parse_args(given, control):
 			return True
 	return False
 
-def newdirs(*args):
-	"""create dirs if not existing"""
-	for arg in args: #strings
-		os.makedirs(arg, exist_ok = True)
-
 def badtoken(t):
 	"""check if t is punctuation, space, or newline char"""
 	return t.is_punct or t.text in [' ', '\n'] #or t.tag_ == 'CD'
@@ -36,9 +31,8 @@ def removepunct(string, nlp):
 	out = out[:-1] #remove trailing space
 	return out
 
-def getnonce(string, previous, nlp):
+def getnonce(string, previous):
 	"""pick a random word in a line as nonce"""
-	string = removepunct(string, nlp) #avoid picking punctuation as nonce
 
 	#pick a word as nonce, and keep trying until an unused one is picked
 	for i in range(10):
@@ -56,15 +50,17 @@ def getcontext_gen(rng, corpus, nums, nonces, nlp):
 		n = random.choice(rng) #random-pick a line number
 		if n in nums: continue #discard if already picked
 
-		#get a line >= 3 words (avoid 'word .')
+		#get a line >= 3 words (excluding punctuation)
 		line = corpus[n]
-		if len(line.split()) < 3: continue #discard and retry
+		nopunct = removepunct(line, nlp)
+		if len(nopunct.split()) < 3: continue #discard and retry
 
 		#get nonce not already picked for another sentence
-		nonce = getnonce(line, nonces, nlp)
+		nonce = getnonce(nopunct, nonces)
 		if type(nonce) is not str: continue
-			#if 10 attempts at picking a new nonce have been
-			#failed, retry from start (pick new line)
+			#if getnonce() has failed (after 10 attempts) at picking
+			#a new nonce, then getcontext_gen() proceeds to pick a
+			#new line
 
 		break #everything's ok if this point is reached
 
@@ -229,7 +225,7 @@ def unifiedindex(size, *args):
 	udict = {}
 	for ngrdict in args: #should be 2 args: just join the 2 dicts
 		udict.update(ngrdict)
-	udictlog = json.dumps(udict, indent = 4) #prepare log
+	udictlog = json.dumps(udict, indent=4) #prepare log
 
 	#create cross-nonce indexes of all n-grams
 	#(dividing between words and pos)
@@ -349,19 +345,19 @@ def plot_confmat(mat, classes, title, normalized):
 
 	handle = plt.figure()
 
-	plt.imshow(mat, interpolation = 'nearest', cmap = plt.cm.Blues)
+	plt.imshow(mat, interpolation='nearest', cmap=plt.cm.Blues)
 	plt.title(title)
 	plt.colorbar()
 	tick_marks = np.arange(len(classes))
-	plt.xticks(tick_marks, classes, rotation = 45)
+	plt.xticks(tick_marks, classes, rotation=45)
 	plt.yticks(tick_marks, classes)
 
 	fmt = '.2f' if normalized else 'd'
 	threshold = mat.max() / 2
 	for i, j in product(range(mat.shape[0]), range(mat.shape[1])):
-		plt.text(j, i, format(mat[i, j], fmt), \
-		horizontalalignment = 'center', \
-                color = 'white' if mat[i, j] > threshold else 'black')
+		plt.text(j, i, format(mat[i, j], fmt),
+		horizontalalignment='center', \
+                color='white' if mat[i, j] > threshold else 'black')
 
 	plt.tight_layout()
 	plt.ylabel('True label')
@@ -392,8 +388,20 @@ def make_confmat(y_test, y_pred, t1, t2):
 
 	#confmat (normalized)
 	title = 'Normalized confusion matrix'
-	mat = mat.astype('float') / mat.sum(axis = 1)[:, np.newaxis] #normalize
-	np.set_printoptions(precision = 2) #set precision for str output
+	mat = mat.astype('float') / mat.sum(axis=1)[:, np.newaxis] #normalize
+	np.set_printoptions(precision=2) #set precision for str output
 	yesnorm = Confmat(mat, title)
 
 	return nonorm, yesnorm
+
+def readname(filename, start, s):
+	"""Parses data from filenames."""
+	stop  = start + filename[start:].find(s)
+	return filename[start:stop], stop
+
+def readtxt(f, n, s0, s1):
+	"""Parses data from plaintext files."""
+	line = f[n]
+	n0 = line.find(s0) + len(s0)
+	n1 = n0 + line[n0:].find(s1)
+	return line[n0:n1]

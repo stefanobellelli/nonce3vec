@@ -11,16 +11,15 @@ class Corpora: #where raw src corpora and formatted outputs are stored
 	minisize = 100   #max size for minified formatted corpora
 	usemini  = False #feed vectorize.py with mini corpora
 
+	corpdir  = 'corpora/'
+
 	## CORPUS-WISE ##
-
 	class Corpus:
-		corpdir  = 'corpora/'
-
-		def __init__(self, name, kind, usemini):
+		def __init__(self, corpdir, name, kind, usemini):
 			self.kind = kind
 
 			# DIRECTORIES
-			s = self.corpdir + name
+			s = corpdir + name
 			ext = '.txt'
 
 			self.srcdir = s + '/'
@@ -29,8 +28,8 @@ class Corpora: #where raw src corpora and formatted outputs are stored
 			self.formatted = self.mini if usemini else self.maxi
 
 	#generate corpus objects
-	gen = Corpus('bnc',  'gen', usemini)
-	inf = Corpus('wiki', 'inf', usemini)
+	gen = Corpus(corpdir, 'bnc',  'gen', usemini)
+	inf = Corpus(corpdir, 'wiki', 'inf', usemini)
 
 class Vectors: #where pickled (binary) vector-space files are stored
 
@@ -43,18 +42,17 @@ class Vectors: #where pickled (binary) vector-space files are stored
 		exclude = ['is_a', 'is_an', 'is_the', 'VBZ_DT']
 
 	## DIRS & FILES ##
-
+	vecdir = 'vectorize/'
 	def __init__(self, subdir):
-		maindir = 'vectorize/'
-
-		self.dir = maindir + subdir
+		
+		self.dir = self.vecdir + subdir
 		self.wordvec = self.dir + 'wordvec.pickle'
 		self.posvec  = self.dir + 'posvec.pickle'
 
 		class Logs:
 			def __init__(self, vecdir, subdir):
 				#GENERAL LOGS
-				self.dir = maindir + 'logs/'
+				self.dir = vecdir + 'logs/'
 				#dictionary of all per-nonce frequencies
 				#(the two dicts in one file):
 				self.udict  = self.dir + \
@@ -73,7 +71,7 @@ class Vectors: #where pickled (binary) vector-space files are stored
 				#vectors of word n-grams dimensions:
 				self.wordvec = self.dir + 'wordvec.log'
 
-		self.logs = Logs(self.dir, subdir)
+		self.logs = Logs(self.vecdir, subdir)
 
 class Svm: #where SVM plotted graphs are stored
 
@@ -99,8 +97,20 @@ class Svm: #where SVM plotted graphs are stored
 
 	## DIRS & FILES ##
 
-	maindir = 'classify/'
 	desc    = f'{Vectors.ngrsize}_{target}_{Vectors.vecsize}'
-	subdir  = f'{maindir}{desc}/'
 	nonorm  = 'confmat.png'
-	yesnorm = 'conf-norm.png'
+	yesnorm = 'conf-norm.png'	
+
+	svmdir = 'classify/'
+	pngdir  = f'{svmdir}{desc}/'
+
+class Parser:
+
+	## SETTINGS ##
+
+	headers = ['N-GRAM SIZE', 'N-GRAM TARGET', 'KERNEL', 'VECSIZE', 'C', \
+		'nSV', 'SCORE', 'ITERATIONS']
+
+	## DIRS & FILES ##
+	results = Svm.desc + '_results.csv'
+	parserdir = 'parse/'
