@@ -8,11 +8,8 @@ __pycache__
 
 #dumps
 /corpora/*.txt
-/vectorize/gen
-/vectorize/inf
-/vectorize/logs
-/classify/*/*.txt
-/classify/*/*.png
+/vectorize
+/classify
 
 #testing stuff
 /sandbox
