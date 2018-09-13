@@ -4,15 +4,18 @@
 Prints the results in console and saves plotted graphs in a subdir.
 """
 
-#add parent dir to PYTHONPATH
-import os, sys
-sys.path.insert(0, os.getcwd())
-
-import pickle, json
+import os, sys, pickle, json
+sys.path.insert(0, os.getcwd()) 
 from numpy import concatenate
 from sklearn.svm import SVC
 from lib import make_arrays, make_labels, make_confmat, get_queries
 from conf import Vectors, Svm
+
+#settings for ablation study
+#add parent dir to PYTHONPATH
+ablst = len(sys.argv) > 1
+if ablst:
+	ablated = sys.argv[1]
 
 #objects
 class Train: #will be populated by Topic
@@ -58,6 +61,9 @@ for kernel, C in settings:
 	x_test  = concatenate([gen.test.vec,  inf.test.vec])
 	y_train = make_labels(gen.train.size, inf.train.size)
 	y_test  = make_labels(gen.test.size,  inf.test.size)
+
+	#line for ablation study
+	print(f'EXCLUDED: {ablated}\n')
 
 	#setup SVM setup and print output
 	print('SVC output:')

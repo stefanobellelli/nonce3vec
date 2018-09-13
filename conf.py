@@ -78,10 +78,10 @@ class Svm: #where SVM plotted graphs are stored
 	## SETTINGS ##
 
 	#training
-	target     = 'word' #'word' or 'pos'
-	C          = [10**exp for exp in range(-1, 5)]
+	target     = 'pos' #'word' or 'pos'
+	C          = [1]#[10**exp for exp in range(-1, 5)]
 	                    #logscale of values to calc by classifier.py
-	kernel     = ['linear', 'rbf', 'poly']
+	kernel     = ['linear']
 	                    #kernels to be used
 	degree     = 3      #relevant for 'poly' only
 	shownonces = False  #print training nonces

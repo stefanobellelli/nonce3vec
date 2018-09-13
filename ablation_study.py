@@ -3,7 +3,7 @@
 """Performs an ablation study."""
 
 import os, pickle
-from conf import Vectors
+from conf import Vectors, Svm
 
 ## EDIT OUT DIMENSIONS ##
 srcfiles = [Vectors('gen/'), Vectors('inf/')]
@@ -33,6 +33,6 @@ for obj in srcfiles:
 
 	## RUN CLASSIFIER ##
 
-#	for i in range(50):
-#		os.system(f'python3 -u scripts/classify.py {i} >> ' \
-#			f'{Vectors.vecdir}_ABLST_out.txt')
+	for i in range(50):
+		os.system(f'python3 -u scripts/classify.py {i} >> ' \
+			f'{Svm.svmdir}ABLST.txt')
