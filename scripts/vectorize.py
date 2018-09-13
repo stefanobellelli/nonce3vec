@@ -4,9 +4,9 @@
 subdir). Dumps a lot of logfiles (in a separate subdir) in the process.
 """
 
-import json, pickle, numpy as np
+import os, json, pickle, numpy as np
 from conf import Corpora, Vectors
-from lib import newdirs, postag, dictize, vecindex, vectorize, unifiedindex
+from lib import postag, dictize, vecindex, vectorize, unifiedindex
 
 ## INITIAL SETTINGS ##
 
@@ -24,7 +24,8 @@ corpora = [gen, inf]
 
 #wcreate dirs for dumps (logs and bins)
 for c in corpora:
-	newdirs(c.vec.logs.dir, c.vec.dir)
+	for d in [c.vec.logs.dir, c.vec.dir]:
+		os.makedirs(d, exist_ok=True)
 
 ## POS-TAG & COUNT N-GRAMS ##
 for c in corpora:

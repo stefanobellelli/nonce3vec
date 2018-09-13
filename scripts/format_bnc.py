@@ -8,7 +8,7 @@ them so that they can be parsed by vectorize.py.
 import os, random, re, tarfile, spacy
 from shutil import rmtree
 from conf import Corpora
-from lib import newdirs, getcontext_gen, sanitize
+from lib import getcontext_gen, sanitize
 
 ## UNPACK BNC & ASSEMBLE IT IN ONE TXT FILE ##
 

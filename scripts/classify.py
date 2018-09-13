@@ -5,15 +5,13 @@ Prints the results in console and saves plotted graphs in a subdir.
 """
 
 #add parent dir to PYTHONPATH
-import os, sys, inspect
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
+import os, sys
+sys.path.insert(0, os.getcwd())
 
 import pickle, json
 from numpy import concatenate
-from matplotlib import pyplot as plt
 from sklearn.svm import SVC
-from lib import newdirs, make_arrays, make_labels, \
-	make_confmat, get_queries
+from lib import make_arrays, make_labels, make_confmat, get_queries
 from conf import Vectors, Svm
 
 #objects
@@ -30,6 +28,10 @@ class Topic:
 		#unpickle dict of vectors (still casted as list)
 		p = Vectors(name + '/')
 		binary = p.wordvec if Svm.target == 'word' else p.posvec
+		#add prog number (for ablation study)
+		if len(sys.argv) > 1:
+			binary = f'{binary[:-7]}_{sys.argv[1]}{binary[-7:]}'
+
 		with open(binary, 'rb') as f:
 			self.dic = pickle.load(f)
 
@@ -49,7 +51,7 @@ for kernel, C in settings:
 	inf = Topic('inf')
 
 	#wcreate dirs for dumps (logs and bins)
-	newdirs(Svm.subdir)
+	os.makedirs(Svm.pngdir, exist_ok=True)
 
 	#prepare train/test sets
 	x_train = concatenate([gen.train.vec, inf.train.vec])
@@ -85,8 +87,8 @@ for kernel, C in settings:
 
 	#set output files
 	s = f'{Svm.desc}_{kernel}_{C}_'
-	nonorm.imgfile  = Svm.subdir + s + Svm.nonorm
-	yesnorm.imgfile = Svm.subdir + s + Svm.yesnorm
+	nonorm.imgfile  = Svm.pngdir + s + Svm.nonorm
+	yesnorm.imgfile = Svm.pngdir + s + Svm.yesnorm
 
 	#print str and save png of confmats
 	for obj in [nonorm, yesnorm]:

@@ -7,7 +7,7 @@ them so that they can be parsed by vectorize.py.
 
 import random, spacy
 from conf import Corpora
-from lib import newdirs, getline_inf, sanitize
+from lib import getline_inf, sanitize
 
 ## PREPARE SOURCE CORPUS ##
 

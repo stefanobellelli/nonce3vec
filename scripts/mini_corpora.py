@@ -10,5 +10,6 @@ for c in [Corpora.gen, Corpora.inf]:
 	with open(c.maxi, 'r') as inp, open(c.mini, 'w') as out:
 		inp = inp.readlines()
 		for i in range(len(inp)):
-			if i< Corpora.minisize:
+			#write first n lines
+			if i < Corpora.minisize:
 				out.write(inp[i])
