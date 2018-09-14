@@ -5,14 +5,13 @@ Prints the results in console and saves plotted graphs in a subdir.
 """
 
 import os, sys, pickle, json
-sys.path.insert(0, os.getcwd()) 
 from numpy import concatenate
 from sklearn.svm import SVC
+sys.path.insert(0, os.getcwd()) #add parent dir to PYTHONPATH
 from lib import make_arrays, make_labels, make_confmat, get_queries
 from conf import Vectors, Svm
 
 #settings for ablation study
-#add parent dir to PYTHONPATH
 ablst = len(sys.argv) > 1
 if ablst:
 	ablated = sys.argv[1]
@@ -63,7 +62,8 @@ for kernel, C in settings:
 	y_test  = make_labels(gen.test.size,  inf.test.size)
 
 	#line for ablation study
-	print(f'EXCLUDED: {ablated}\n')
+	if ablst:
+		print(f'EXCLUDED: {ablated}\n')
 
 	#setup SVM setup and print output
 	print('SVC output:')
@@ -82,7 +82,7 @@ for kernel, C in settings:
 
 	#print nonces used for training (very long output)
 	if Svm.shownonces:
-		trainnonces = [gen.train.nonces, inf.train.nonces]
+		trainnonces = gen.train.nonces + inf.train.nonces
 		print('Training nonces:')
 		print([trainnonces[s] for s in clf.support_])
 		print()
