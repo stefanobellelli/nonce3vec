@@ -9,7 +9,7 @@ class Corpora: #where raw src corpora and formatted outputs are stored
 	## GENERAL ##
 	size     = 5000  #max size of formatted corpora
 	minisize = 100   #max size for minified formatted corpora
-	usemini  = False #feed vectorize.py with mini corpora
+	usemini  = True #feed vectorize.py with mini corpora
 
 	corpdir  = 'corpora/'
 
@@ -84,8 +84,8 @@ class Svm: #where SVM plotted graphs are stored
 	kernel     = ['linear']
 	                    #kernels to be used
 	degree     = 3      #relevant for 'poly' only
-	shownonces = False  #print training nonces
-	trainsize  = 3500   #SVM training lines per condition (tot is twice)
+	shownonces = True  #print training nonces
+	trainsize  = 35   #SVM training lines per condition (tot is twice)
 	maxiter    = 10**7  #timeout after this
 
 	#plotting
@@ -93,7 +93,8 @@ class Svm: #where SVM plotted graphs are stored
 
 	#testing
 	realtest  = False   #test on real queries (not implemented!)
-	queryfile = 'queryvec.txt' #file with real queries
+	queryfile = 'posvec.log' if target == 'pos' else 'wordvec.log'
+		#file with real queries
 
 	## DIRS & FILES ##
 

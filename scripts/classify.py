@@ -72,7 +72,7 @@ for kernel, C in settings:
 	model  = clf.fit(x_train, y_train)
 	score  = clf.score(x_test, y_test)
 	y_pred = clf.predict(x_test)
-
+	print(x_train)
 	print('\n') #needed because clf prints output in a weird way
 	print('SVC Model:')
 	print(model)
@@ -86,6 +86,7 @@ for kernel, C in settings:
 		print('Training nonces:')
 		print([trainnonces[s] for s in clf.support_])
 		print()
+		print(clf.predict)
 
 	#make confusion matrix (prints to stdout)
 	nonorm, yesnorm = make_confmat(y_pred, y_test, gen.fullname, \
